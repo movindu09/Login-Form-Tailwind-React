@@ -1,13 +1,31 @@
 import { useState } from 'react';
-import axios from 'axios';
-import Form from '../components/Form';
+import AddNew from '../components/AddNew';
 import Nav from '../components/Nav';
+import axios from 'axios';
+import Table from '../components/Table';
 
-const Login = () => {
+const Home = () => {
 	const initialState = {
-		email: '',
-		password: '',
+		title: '',
+		description: '',
 	};
+
+
+    const data = [
+		{
+			_id: '1',
+			title: 'Task 1',
+			description: 'Description 1',
+			status: 'Pending',
+		},
+		{
+			_id: '2',
+			title: 'Task 2',
+			description: 'Description 2',
+			status: 'Completed',
+		},
+		
+	];
 
 	const [formData, setFormData] = useState(initialState);
 
@@ -26,19 +44,20 @@ const Login = () => {
 		}
 	};
 
-	const { email, password } = formData;
+	const { title, description } = formData;
 
 	return (
 		<div>
 			<Nav />
-			<Form
+			<AddNew
 				onSubmitForm={onSubmitForm}
-				email={email}
-				password={password}
+				title={title}
 				inputChangeHandler={inputChangeHandler}
+				description={description}
 			/>
+			<Table data={data} />
 		</div>
 	);
 };
 
-export default Login;
+export default Home;

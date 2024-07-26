@@ -1,10 +1,11 @@
 import { useState } from 'react';
+import SForm from '../components/SForm';
 import axios from 'axios';
-import Form from '../components/Form';
 import Nav from '../components/Nav';
 
-const Login = () => {
-	const initialState = {
+const SignUp = () => {
+    const initialState = {
+        name: '',
 		email: '',
 		password: '',
 	};
@@ -26,19 +27,20 @@ const Login = () => {
 		}
 	};
 
-	const { email, password } = formData;
+    const { name, email, password } = formData;
 
 	return (
-		<div>
-			<Nav />
-			<Form
-				onSubmitForm={onSubmitForm}
-				email={email}
-				password={password}
-				inputChangeHandler={inputChangeHandler}
-			/>
-		</div>
-	);
+			<>
+				<Nav/>
+				<SForm
+					onSubmitForm={onSubmitForm}
+					name={name}
+					email={email}
+					password={password}
+					inputChangeHandler={inputChangeHandler}
+				/>
+			</>
+		);
 };
 
-export default Login;
+export default SignUp;
