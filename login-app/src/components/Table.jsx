@@ -1,7 +1,6 @@
-const Table = (props) => {
+import React from 'react';
 
-    const {data} = props
-
+const Table = ({ data, deleteTodo }) => {
 	const columns = [
 		{
 			title: 'Title',
@@ -14,25 +13,36 @@ const Table = (props) => {
 			key: 'description',
 		},
 		{
-			title: 'Status',
-			dataIndex: 'status',
-			key: 'status',
-		},
-		{
 			title: 'Actions',
 			key: 'action',
+			render: (text, record) => (
+				<div className="flex space-x-4">
+					<button
+						className="text-indigo-600 hover:text-indigo-900"
+						onClick={() => editTodo('Edit todo with id:', record.id)}
+					>
+						Edit
+					</button>
+					<button
+						className="text-red-600 hover:text-red-900"
+						onClick={() => deleteTodo(record.id)}
+					>
+						Delete
+					</button>
+				</div>
+			),
 		},
 	];
 
 	return (
 		<div className="w-auto mx-16 p-5">
 			<table className="min-w-full divide-y divide-gray-200">
-				<thead className="bg-gray-50">
+				<thead className="bg-gray-500">
 					<tr>
 						{columns.map((column) => (
 							<th
 								key={column.key}
-								className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+								className="px-6 py-3 text-left text-xs font-medium text-slate-950 uppercase tracking-wider"
 							>
 								{column.title}
 							</th>
@@ -41,23 +51,17 @@ const Table = (props) => {
 				</thead>
 				<tbody className="bg-white divide-y divide-gray-200">
 					{data.map((row) => (
-						<tr key={row._id}>
+						<tr key={row.id}>
 							{columns.map((column) => (
 								<td
 									key={column.key}
 									className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
 								>
-									{row[column.dataIndex]}
+									{column.render
+										? column.render(null, row)
+										: row[column.dataIndex]}
 								</td>
 							))}
-							<td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-								<button className="text-indigo-600 hover:text-indigo-900">
-									Edit
-								</button>
-								<button className="text-red-600 hover:text-red-900 ml-4">
-									Delete
-								</button>
-							</td>
 						</tr>
 					))}
 				</tbody>

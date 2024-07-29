@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AddNew from '../components/AddNew';
 import Nav from '../components/Nav';
 import axios from 'axios';
@@ -10,24 +10,23 @@ const Home = () => {
 		description: '',
 	};
 
-
-    const data = [
-		{
-			_id: '1',
-			title: 'Task 1',
-			description: 'Description 1',
-			status: 'Pending',
-		},
-		{
-			_id: '2',
-			title: 'Task 2',
-			description: 'Description 2',
-			status: 'Completed',
-		},
-		
-	];
-
+	const [lists, setLists] = useState([]);
 	const [formData, setFormData] = useState(initialState);
+
+	useEffect(() => {
+		const fetchTodo = async () => {
+			try {
+				const response = await axios.get(
+					`http://localhost:8090/api/v1/todo`
+				);
+				setLists(response.data);
+				console.log(response.data);
+			} catch (error) {
+				console.log(error);
+			}
+		};
+		fetchTodo();
+	}, []);
 
 	const inputChangeHandler = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -37,8 +36,22 @@ const Home = () => {
 		e.preventDefault();
 		console.log('Form Submitted:', formData);
 		try {
-			const response = await axios.post('', formData);
+			const response = await axios.post(
+				'http://localhost:8090/api/v1/todo',
+				formData
+			);
 			console.log(response.data);
+			setLists([...lists, response.data]);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const deleteTodo = async (id) => {
+		console.log('Attempting to delete todo with id:', id);
+		try {
+			await axios.delete(`http://localhost:8090/api/v1/todo/${id}`);
+			setLists(lists.filter((item) => item.id !== id));
 		} catch (error) {
 			console.log(error);
 		}
@@ -55,7 +68,7 @@ const Home = () => {
 				inputChangeHandler={inputChangeHandler}
 				description={description}
 			/>
-			<Table data={data} />
+			<Table data={lists} deleteTodo={deleteTodo} />
 		</div>
 	);
 };

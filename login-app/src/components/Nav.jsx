@@ -1,9 +1,14 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Dialog, DialogPanel, PopoverGroup } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useLocation } from 'react-router-dom';
 
 const Nav = () => {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+	const location = useLocation();
+
+	const showLoginButton = !['/login', '/signUp'].includes(location.pathname);
+
 	return (
 		<header className="bg-white">
 			<nav
@@ -30,34 +35,38 @@ const Nav = () => {
 						<Bars3Icon aria-hidden="true" className="h-6 w-6" />
 					</button>
 				</div>
-				<PopoverGroup className="hidden lg:flex lg:gap-x-12">
-					<a
-						href="/home"
-						className="text-sm font-semibold leading-6 text-gray-900"
-					>
-						Home
-					</a>
-					<a
-						href="#"
-						className="text-sm font-semibold leading-6 text-gray-900"
-					>
-						Dashboard
-					</a>
-					<a
-						href="#"
-						className="text-sm font-semibold leading-6 text-gray-900"
-					>
-						Contact
-					</a>
-				</PopoverGroup>
-				<div className="hidden lg:flex lg:flex-1 lg:justify-end">
-					<a
-						href="/login"
-						className="text-sm font-semibold leading-6 text-gray-900"
-					>
-						Log in <span aria-hidden="true">&rarr;</span>
-					</a>
-				</div>
+				{showLoginButton && (
+					<PopoverGroup className="hidden lg:flex lg:gap-x-12">
+						<a
+							href="/home"
+							className="text-sm font-semibold leading-6 text-gray-900"
+						>
+							Home
+						</a>
+						<a
+							href="#"
+							className="text-sm font-semibold leading-6 text-gray-900"
+						>
+							Dashboard
+						</a>
+						<a
+							href="#"
+							className="text-sm font-semibold leading-6 text-gray-900"
+						>
+							Contact
+						</a>
+					</PopoverGroup>
+				)}
+				
+					<div className="hidden lg:flex lg:flex-1 lg:justify-end">
+						<a
+							href="/login"
+							className="text-sm font-semibold leading-6 text-gray-900"
+						>
+							Log in <span aria-hidden="true">&rarr;</span>
+						</a>
+					</div>
+				
 			</nav>
 			<Dialog
 				open={mobileMenuOpen}
@@ -86,34 +95,38 @@ const Nav = () => {
 					</div>
 					<div className="mt-6 flow-root">
 						<div className="-my-6 divide-y divide-gray-500/10">
-							<div className="space-y-2 py-6">
-								<a
-									href="#"
-									className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-								>
-									Home
-								</a>
-								<a
-									href="#"
-									className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-								>
-									Dashboard
-								</a>
-								<a
-									href="#"
-									className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-								>
-									Contact
-								</a>
-							</div>
-							<div className="py-6">
-								<a
-									href="#"
-									className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-								>
-									Log in
-								</a>
-							</div>
+							{showLoginButton && (
+								<div className="space-y-2 py-6">
+									<a
+										href="/home"
+										className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+									>
+										Home
+									</a>
+									<a
+										href="#"
+										className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+									>
+										Dashboard
+									</a>
+									<a
+										href="#"
+										className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+									>
+										Contact
+									</a>
+								</div>
+							)}
+							
+								<div className="py-6">
+									<a
+										href="/login"
+										className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+									>
+										Log in
+									</a>
+								</div>
+							
 						</div>
 					</div>
 				</DialogPanel>
