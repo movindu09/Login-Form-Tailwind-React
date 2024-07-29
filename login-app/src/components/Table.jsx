@@ -1,6 +1,4 @@
-import React from 'react';
-
-const Table = ({ data, deleteTodo }) => {
+const Table = ({ data, deleteTodo, showUpdateModal }) => {
 	const columns = [
 		{
 			title: 'Title',
@@ -19,7 +17,7 @@ const Table = ({ data, deleteTodo }) => {
 				<div className="flex space-x-4">
 					<button
 						className="text-indigo-600 hover:text-indigo-900"
-						onClick={() => editTodo('Edit todo with id:', record.id)}
+						onClick={() => showUpdateModal(record)}
 					>
 						Edit
 					</button>

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import AddNew from '../components/AddNew';
 import Nav from '../components/Nav';
-import axios from 'axios';
 import Table from '../components/Table';
+import Modal from '../components/Modal';
+import { fetchTodos, addTodo, deleteTodo, updateTodo } from '../api/axios';
 
 const Home = () => {
 	const initialState = {
@@ -12,20 +13,30 @@ const Home = () => {
 
 	const [lists, setLists] = useState([]);
 	const [formData, setFormData] = useState(initialState);
+	const [updateVisible, setUpdateVisible] = useState(false);
+	const [selectedTodo, setSelectedTodo] = useState(null);
+
+	const showUpdateModal = (record) => {
+		setSelectedTodo(record);
+		setUpdateVisible(true);
+	};
+
+	const closeModal = () => {
+		setUpdateVisible(false);
+		setSelectedTodo(null);
+	};
 
 	useEffect(() => {
-		const fetchTodo = async () => {
+		const fetchData = async () => {
 			try {
-				const response = await axios.get(
-					`http://localhost:8090/api/v1/todo`
-				);
+				const response = await fetchTodos();
 				setLists(response.data);
 				console.log(response.data);
 			} catch (error) {
 				console.log(error);
 			}
 		};
-		fetchTodo();
+		fetchData();
 	}, []);
 
 	const inputChangeHandler = (e) => {
@@ -36,10 +47,7 @@ const Home = () => {
 		e.preventDefault();
 		console.log('Form Submitted:', formData);
 		try {
-			const response = await axios.post(
-				'http://localhost:8090/api/v1/todo',
-				formData
-			);
+			const response = await addTodo(formData);
 			console.log(response.data);
 			setLists([...lists, response.data]);
 		} catch (error) {
@@ -47,11 +55,25 @@ const Home = () => {
 		}
 	};
 
-	const deleteTodo = async (id) => {
-		console.log('Attempting to delete todo with id:', id);
+	const handleDelete = async (id) => {
+		console.log('Record deleted with id: ', id);
 		try {
-			await axios.delete(`http://localhost:8090/api/v1/todo/${id}`);
+			await deleteTodo(id);
 			setLists(lists.filter((item) => item.id !== id));
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const handleEdit = async (values) => {
+		const id = selectedTodo.id;
+		try {
+			const response = await updateTodo(id, values);
+			const updatedRecords = lists.map((record) =>
+				record.id === selectedTodo.id ? response.data : record
+			);
+			setLists(updatedRecords);
+			closeModal();
 		} catch (error) {
 			console.log(error);
 		}
@@ -63,12 +85,24 @@ const Home = () => {
 		<div>
 			<Nav />
 			<AddNew
+				headerTitle="Add a new item"
 				onSubmitForm={onSubmitForm}
 				title={title}
 				inputChangeHandler={inputChangeHandler}
 				description={description}
+				buttonName="Submit"
 			/>
-			<Table data={lists} deleteTodo={deleteTodo} />
+			<Table
+				data={lists}
+				deleteTodo={handleDelete}
+				showUpdateModal={showUpdateModal}
+			/>
+			<Modal
+				visible={updateVisible}
+				onClose={closeModal}
+				todo={selectedTodo}
+				onSubmit={handleEdit}
+			/>
 		</div>
 	);
 };

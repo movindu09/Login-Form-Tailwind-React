@@ -1,16 +1,23 @@
 const AddNew = (props) => {
-	const { onSubmitForm, title, inputChangeHandler, description } = props;
+	const {
+		onSubmitForm,
+		title,
+		inputChangeHandler,
+		description,
+		headerTitle,
+		buttonName,
+	} = props;
 
 	return (
 		<div className="bg-white">
 			<section className=" mx-20 my-30 rounded-lg shadow bg-blue-300">
+				<h1 className="font-bold text-center text-4xl">
+					{headerTitle}
+				</h1>
 				<form
 					className="mx-20  w-auto space-y-4"
 					onSubmit={onSubmitForm}
 				>
-					<h1 className="font-bold text-center text-4xl">
-						Add a new item
-					</h1>
 					<div>
 						<label htmlFor="title" className="sr-only">
 							Title
@@ -50,7 +57,7 @@ const AddNew = (props) => {
 							type="submit"
 							className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
 						>
-							Default
+							{buttonName}
 						</button>
 					</div>
 				</form>

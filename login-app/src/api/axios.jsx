@@ -1,15 +1,48 @@
-import axios from "axios";
+import axios from 'axios';
 
-const todoURL = import.meta.env.VITE_TODO_URL;
 
-const getTodo = async () => {
-	const response = await axios.get(`${todoURL}/todo`);
-	return response.data;
+const api = axios.create({
+	baseURL: 'http://localhost:8090/api/v1/', // base URL
+	headers: {
+		'Content-Type': 'application/json',
+	},
+});
+
+//  set the JWT token in headers
+const setAuthToken = (token) => {
+	if (token) {
+		api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+	} else {
+		delete api.defaults.headers.common['Authorization'];
+	}
 };
 
-const createTodo = async () => {
-	const response = await axios.post(`${todoURL}/todo`, FormData);
-	return response.data;
+//  get the JWT token from local storage and set it in headers
+const initializeAuthToken = () => {
+	const token = localStorage.getItem('token');
+	setAuthToken(token);
 };
 
-export { getTodo, createTodo };
+
+export const fetchTodos = async () => {
+	initializeAuthToken();
+	return api.get('todo');
+};
+
+export const addTodo = async (data) => {
+	initializeAuthToken();
+	return api.post('todo', data);
+};
+
+export const deleteTodo = async (id) => {
+	initializeAuthToken();
+	return api.delete(`todo/${id}`);
+};
+
+export const updateTodo = async (id, data) => {
+	initializeAuthToken();
+	return api.put(`todo/${id}`, data);
+};
+
+
+export default api;

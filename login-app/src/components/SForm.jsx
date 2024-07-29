@@ -1,15 +1,15 @@
 const SForm = (props) => {
-	const { onSubmitForm, email, password, inputChangeHandler, name } = props;
+	const { onSubmitForm, email, password, inputChangeHandler, name, role } =
+		props;
 
 	return (
-		<div className="bg-white p-20 rounded-lg shadow-md ">
+		<div className="bg-white p-20 rounded-lg shadow-md">
 			<section className="relative flex flex-wrap lg:h-screen lg:items-center bg-blue-200 rounded-md">
 				<div className="w-full px-4 py-12 sm:px-6 sm:py-16 lg:w-1/2 lg:px-8 lg:py-24">
 					<div className="mx-auto max-w-lg text-center">
 						<h1 className="text-2xl font-bold sm:text-3xl">
 							Get started today!
 						</h1>
-
 						<p className="mt-4 text-gray-500">
 							Lorem ipsum dolor sit amet consectetur adipisicing
 							elit. Et libero nulla eaque error neque ipsa culpa
@@ -25,17 +25,15 @@ const SForm = (props) => {
 							<label htmlFor="name" className="sr-only">
 								Name
 							</label>
-
 							<div className="relative">
 								<input
-									type="name"
+									type="text"
 									name="name"
 									className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
 									placeholder="Enter Name"
 									value={name}
 									onChange={inputChangeHandler}
 								/>
-
 								<span className="absolute inset-y-0 end-0 grid place-content-center px-4">
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -59,7 +57,6 @@ const SForm = (props) => {
 							<label htmlFor="email" className="sr-only">
 								Email
 							</label>
-
 							<div className="relative">
 								<input
 									type="email"
@@ -69,7 +66,6 @@ const SForm = (props) => {
 									value={email}
 									onChange={inputChangeHandler}
 								/>
-
 								<span className="absolute inset-y-0 end-0 grid place-content-center px-4">
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -93,7 +89,6 @@ const SForm = (props) => {
 							<label htmlFor="password" className="sr-only">
 								Password
 							</label>
-
 							<div className="relative">
 								<input
 									type="password"
@@ -103,7 +98,6 @@ const SForm = (props) => {
 									value={password}
 									onChange={inputChangeHandler}
 								/>
-
 								<span className="absolute inset-y-0 end-0 grid place-content-center px-4">
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -129,14 +123,46 @@ const SForm = (props) => {
 							</div>
 						</div>
 
+						<div>
+							<label htmlFor="role" className="sr-only">
+								Role
+							</label>
+							<div className="relative">
+								<select
+									name="role"
+									value={role}
+									onChange={inputChangeHandler}
+									className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
+								>
+									<option value="User">User</option>
+									<option value="Admin">Admin</option>
+								</select>
+								<span className="absolute inset-y-0 end-0 grid place-content-center px-4">
+									<svg
+										className="w-2.5 h-2.5 text-gray-400"
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 10 6"
+									>
+										<path
+											stroke="currentColor"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											strokeWidth="2"
+											d="m1 1 4 4 4-4"
+										/>
+									</svg>
+								</span>
+							</div>
+						</div>
+
 						<div className="flex items-center justify-between">
 							<p className="text-sm text-gray-500">
-								Already have an account?
+								Already have an account?{' '}
 								<a className="underline" href="/login">
 									Login
 								</a>
 							</p>
-
 							<button
 								type="submit"
 								className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white"
