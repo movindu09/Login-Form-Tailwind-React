@@ -9,7 +9,7 @@ const SignUp = () => {
 		name: '',
 		email: '',
 		password: '',
-		role: 'User',
+		role: 'USER', 
 	};
 
 	const [formData, setFormData] = useState(initialState);
@@ -42,7 +42,7 @@ const SignUp = () => {
 					type: 'success',
 					message: 'Signup successful',
 				});
-				setFormData(initialState); // Reset form data
+				setFormData(initialState); 
 			}
 		} catch (error) {
 			console.log(error);

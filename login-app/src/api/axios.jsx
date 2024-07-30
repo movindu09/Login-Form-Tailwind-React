@@ -8,7 +8,6 @@ const api = axios.create({
 	},
 });
 
-//  set the JWT token in headers
 const setAuthToken = (token) => {
 	if (token) {
 		api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -17,7 +16,6 @@ const setAuthToken = (token) => {
 	}
 };
 
-//  get the JWT token from local storage and set it in headers
 const initializeAuthToken = () => {
 	const token = localStorage.getItem('token');
 	setAuthToken(token);

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import axios from 'axios';
-import {jwtDecode} from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode'; 
 import Form from '../components/Form';
 import Nav from '../components/Nav';
-import Notification from '../components/Notification'; 
+import Notification from '../components/Notification';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
@@ -20,7 +20,6 @@ const Login = () => {
 		type: '',
 		message: '',
 	});
-	const [role, setRole] = useState('')
 
 	const inputChangeHandler = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -45,15 +44,21 @@ const Login = () => {
 				localStorage.setItem('userId', id);
 
 				const decodedToken = jwtDecode(token);
-				setRole(decodedToken.role);
-				localStorage.setItem('role', decodedToken.role);
+				const userRole = decodedToken.role;
+				console.log(userRole);
+				localStorage.setItem('role', userRole);
 
 				setNotification({
 					visible: true,
 					type: 'success',
 					message: 'Login successful',
 				});
-				navigate('/home');
+
+				if (userRole === 'ADMIN') {
+					navigate('/home');
+				} else {
+					navigate('/user');
+				}
 			}
 		} catch (error) {
 			console.log('Error:', error);

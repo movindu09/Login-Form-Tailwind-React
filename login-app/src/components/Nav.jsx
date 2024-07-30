@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Dialog, DialogPanel, PopoverGroup } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useLocation } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 const Nav = () => {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const location = useLocation();
+	const { logout, token } = useContext(AuthContext);
 
 	const showLoginButton = !['/login', '/signUp'].includes(location.pathname);
 
@@ -59,18 +61,21 @@ const Nav = () => {
 				)}
 
 				<div className="hidden lg:flex lg:flex-1 lg:justify-end">
-					<a
-						href="/login"
-						className="text-sm font-semibold leading-6 text-gray-900"
-					>
-						Log in <span aria-hidden="true">&rarr;</span>
-					</a>
-					<a
-						href="/login"
-						className="text-sm font-semibold leading-6 text-gray-900"
-					>
-						Log out <span aria-hidden="true">&rarr;</span>
-					</a>
+					{token ? (
+						<a
+							onClick={logout}
+							className="text-sm font-semibold leading-6 text-gray-900 cursor-pointer"
+						>
+							Log out <span aria-hidden="true">&rarr;</span>
+						</a>
+					) : (
+						<a
+							href="/login"
+							className="text-sm font-semibold leading-6 text-gray-900"
+						>
+							Log in <span aria-hidden="true">&rarr;</span>
+						</a>
+					)}
 				</div>
 			</nav>
 			<Dialog
@@ -124,18 +129,21 @@ const Nav = () => {
 							)}
 
 							<div className="py-6">
-								<a
-									href="/login"
-									className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-								>
-									Log in
-								</a>
-								<a
-									href="/login"
-									className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-								>
-									Log out
-								</a>
+								{token ? (
+									<a
+										onClick={logout}
+										className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 cursor-pointer"
+									>
+										Log out
+									</a>
+								) : (
+									<a
+										href="/login"
+										className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+									>
+										Log in
+									</a>
+								)}
 							</div>
 						</div>
 					</div>

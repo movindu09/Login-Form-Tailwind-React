@@ -134,9 +134,10 @@ const SForm = (props) => {
 									onChange={inputChangeHandler}
 									className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
 								>
-									<option value="User">User</option>
-									<option value="Admin">Admin</option>
+									<option value="USER">User</option>
+									<option value="ADMIN">Admin</option>
 								</select>
+
 								<span className="absolute inset-y-0 end-0 grid place-content-center px-4">
 									<svg
 										className="w-2.5 h-2.5 text-gray-400"
