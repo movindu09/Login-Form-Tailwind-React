@@ -1,15 +1,14 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
 	const [token, setToken] = useState(null);
 	const [role, setRole] = useState(null);
+	const [loading, setLoading] = useState(true);
 	const navigate = useNavigate();
-
-	console.log(token, role);
 
 	useEffect(() => {
 		const storedToken = localStorage.getItem('token');
@@ -19,6 +18,7 @@ export const AuthProvider = ({ children }) => {
 			setToken(storedToken);
 			setRole(storedRole);
 		}
+		setLoading(false);
 	}, []);
 
 	const logout = () => {
@@ -42,6 +42,8 @@ export const AuthProvider = ({ children }) => {
 			setRole(null);
 		}
 	};
+
+	if (loading) return <div>Loading...</div>;
 
 	return (
 		<AuthContext.Provider

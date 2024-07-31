@@ -63,6 +63,7 @@ const Notification = (props) => {
 				</svg>
 			</button>
 		</div>
+		
 	);
 };
 

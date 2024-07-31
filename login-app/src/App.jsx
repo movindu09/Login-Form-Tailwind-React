@@ -19,7 +19,7 @@ const App = () => {
 					token && role === 'ADMIN' ? (
 						<Home />
 					) : (
-						<Navigate to="/login" replace />
+						<Navigate to="/" replace />
 					)
 				}
 			/>
@@ -29,7 +29,7 @@ const App = () => {
 					token && role === 'USER' ? (
 						<UserHome />
 					) : (
-						<Navigate to="/login" replace />
+						<Navigate to="/" replace />
 					)
 				}
 			/>
