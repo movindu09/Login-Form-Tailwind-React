@@ -1,6 +1,5 @@
-import React from 'react';
-
-const Notification = ({ type, message, onClose }) => {
+const Notification = (props) => {
+	const { type, message, onClose } = props;
 	const notificationStyle =
 		type === 'success'
 			? 'bg-green-100 text-green-500'

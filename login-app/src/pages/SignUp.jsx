@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import SForm from '../components/SForm';
-import axios from 'axios';
 import Nav from '../components/Nav';
-import Notification from '../components/Notification'; // Adjust the path as necessary
+import Notification from '../components/Notification'; 
+import { signUp } from '../api/axios'; 
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
+	const  navigate  = useNavigate();
 	const initialState = {
 		name: '',
 		email: '',
 		password: '',
-		role: 'USER', 
+		role: 'USER',
 	};
 
 	const [formData, setFormData] = useState(initialState);
@@ -29,20 +31,16 @@ const SignUp = () => {
 
 	const onSubmitForm = async (e) => {
 		e.preventDefault();
-		console.log('Form Submitted:', formData);
 		try {
-			const response = await axios.post(
-				'http://localhost:8090/api/v1/auth/signup',
-				formData
-			);
-			console.log(response.data);
-			if (response.status === 200) {
+			const response = await signUp(formData);
+			if (response.status === 201) {
 				setNotification({
 					visible: true,
 					type: 'success',
-					message: 'Signup successful',
+					message: 'SignUp successful',
 				});
-				setFormData(initialState); 
+				setFormData(initialState);
+				navigate('/login');
 			}
 		} catch (error) {
 			console.log(error);

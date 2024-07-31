@@ -1,46 +1,35 @@
-import axios from 'axios';
+import api from '../context/AxiosInstance'; 
 
+const todoURL = import.meta.env.VITE_TODO_URL;
+const authURL = import.meta.env.VITE_AUTH_URL;
 
-const api = axios.create({
-	baseURL: 'http://localhost:8090/api/v1/', // base URL
-	headers: {
-		'Content-Type': 'application/json',
-	},
-});
-
-const setAuthToken = (token) => {
-	if (token) {
-		api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-	} else {
-		delete api.defaults.headers.common['Authorization'];
-	}
+const getTodo = async () => {
+	const response = await api.get(`${todoURL}`);
+	return response;
 };
 
-const initializeAuthToken = () => {
-	const token = localStorage.getItem('token');
-	setAuthToken(token);
+const deleteTodo = async (id) => {
+	await api.delete(`${todoURL}/${id}`);
 };
 
-
-export const fetchTodos = async () => {
-	initializeAuthToken();
-	return api.get('todo');
+const addTodo = async (todo) => {
+	const response = await api.post(`${todoURL}`, todo);
+	return response;
 };
 
-export const addTodo = async (data) => {
-	initializeAuthToken();
-	return api.post('todo', data);
+const updateTodo = async (id, formData) => {
+	const response = await api.put(`${todoURL}/${id}`, formData);
+	return response;
 };
 
-export const deleteTodo = async (id) => {
-	initializeAuthToken();
-	return api.delete(`todo/${id}`);
+const login = async (formData) => {
+	const response = await api.post(`${authURL}/signIn`, formData);
+	return response;
 };
 
-export const updateTodo = async (id, data) => {
-	initializeAuthToken();
-	return api.put(`todo/${id}`, data);
+const signUp = async (formData) => {
+	const response = await api.post(`${authURL}/signUp`, formData);
+	return response;
 };
 
-
-export default api;
+export { getTodo, deleteTodo, addTodo, updateTodo, login, signUp };

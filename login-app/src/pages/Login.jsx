@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import axios from 'axios';
-import {jwtDecode} from 'jwt-decode'; 
+import { jwtDecode } from 'jwt-decode';
 import Form from '../components/Form';
 import Nav from '../components/Nav';
 import Notification from '../components/Notification';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
 	const navigate = useNavigate();
+	const { setToken, setRole } = useAuth();
 
 	const initialState = {
 		email: '',
@@ -31,22 +33,21 @@ const Login = () => {
 
 	const onSubmitForm = async (e) => {
 		e.preventDefault();
-		console.log('Form Submitted:', formData);
 		try {
 			const response = await axios.post(
 				'http://localhost:8090/api/v1/auth/signIn',
 				formData
 			);
-			console.log(response.data);
 			if (response.status === 200) {
-				const { token, id } = response.data;
+				const { token, refreshToken } = response.data;
 				localStorage.setItem('token', token);
-				localStorage.setItem('userId', id);
-
+				localStorage.setItem('refreshToken', refreshToken);
 				const decodedToken = jwtDecode(token);
 				const userRole = decodedToken.role;
-				console.log(userRole);
 				localStorage.setItem('role', userRole);
+
+				setToken(token);
+				setRole(userRole);
 
 				setNotification({
 					visible: true,
@@ -55,15 +56,13 @@ const Login = () => {
 				});
 
 				if (userRole === 'ADMIN') {
-					navigate('/home');
+					navigate('/admin');
 				} else {
 					navigate('/user');
 				}
 			}
 		} catch (error) {
-			console.log('Error:', error);
 			let errorMessage = 'An unexpected error occurred.';
-
 			if (error.response && error.response.data) {
 				const errorData = error.response.data;
 				if (typeof errorData === 'string') {
@@ -72,7 +71,6 @@ const Login = () => {
 					errorMessage = Object.values(errorData).join(' ');
 				}
 			}
-
 			setNotification({
 				visible: true,
 				type: 'error',

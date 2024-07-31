@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import AddNew from '../components/AddNew';
 import Nav from '../components/Nav';
 import Table from '../components/Table';
 import Modal from '../components/Modal';
-import { fetchTodos, addTodo, deleteTodo, updateTodo } from '../api/axios';
+import { getTodo, addTodo, deleteTodo, updateTodo } from '../api/axios';
+import { AuthContext } from '../context/AuthContext';
 
 const Home = () => {
 	const initialState = {
@@ -15,6 +16,7 @@ const Home = () => {
 	const [formData, setFormData] = useState(initialState);
 	const [updateVisible, setUpdateVisible] = useState(false);
 	const [selectedTodo, setSelectedTodo] = useState(null);
+	const { role } = useContext(AuthContext);
 
 	const showUpdateModal = (record) => {
 		setSelectedTodo(record);
@@ -29,7 +31,7 @@ const Home = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const response = await fetchTodos();
+				const response = await getTodo();
 				setLists(response.data);
 				console.log(response.data);
 			} catch (error) {
@@ -96,6 +98,7 @@ const Home = () => {
 				data={lists}
 				deleteTodo={handleDelete}
 				showUpdateModal={showUpdateModal}
+				role={role}
 			/>
 			<Modal
 				visible={updateVisible}

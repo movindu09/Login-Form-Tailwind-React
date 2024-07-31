@@ -1,4 +1,6 @@
-const Table = ({ data, deleteTodo, showUpdateModal }) => {
+const Table = (props) => {
+	const { data, deleteTodo, showUpdateModal, role } = props;
+
 	const columns = [
 		{
 			title: 'Title',
@@ -21,12 +23,14 @@ const Table = ({ data, deleteTodo, showUpdateModal }) => {
 					>
 						Edit
 					</button>
-					<button
-						className="text-red-600 hover:text-red-900"
-						onClick={() => deleteTodo(record.id)}
-					>
-						Delete
-					</button>
+					{role === 'ADMIN' && ( 
+						<button
+							className="text-red-600 hover:text-red-900"
+							onClick={() => deleteTodo && deleteTodo(record.id)} 
+						>
+							Delete
+						</button>
+					)}
 				</div>
 			),
 		},
